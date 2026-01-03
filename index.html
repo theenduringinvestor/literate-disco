@@ -2,9 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Valentine's Day Engine - JSON Generator (v7.1)</title>
+    <title>Enduring Card Engine - Order Generator (v8)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <style>
       body {
         margin: 0;
@@ -12,336 +11,456 @@
         font-family: Arial, sans-serif;
         background: #111;
         color: #fff;
-        text-align: center; /* CENTER ALL TEXT */
+        text-align: center;
       }
 
       h1 {
-        text-align: center;
+        margin: 0 0 6px;
         color: #ff4d88;
-        margin-bottom: 4px;
       }
-
-      h2.subtitle {
-        text-align: center;
-        font-size: 0.9rem;
+      .subtitle {
+        margin: 0 0 16px;
         color: #ffbdd6;
-        margin-top: 0;
-        margin-bottom: 16px;
+        font-size: 0.95rem;
       }
 
       .engine {
-        max-width: 850px;
+        max-width: 900px;
         margin: 0 auto;
-        padding: 20px;
         background: #222;
-        border-radius: 12px;
+        border-radius: 14px;
+        padding: 20px;
         position: relative;
-        text-align: center; /* CENTER ALL TEXT */
+        text-align: center;
       }
 
-      /* LOGO */
       .logo {
         position: absolute;
         top: 15px;
         right: 15px;
         width: 130px;
         height: auto;
-        border-radius: 6px;
+        border-radius: 8px;
       }
 
       label {
         display: block;
-        margin-top: 10px;
-        font-size: 0.9rem;
+        margin-top: 12px;
+        font-size: 0.92rem;
         color: #ffbdd6;
-        text-align: center;
       }
 
       input,
       select,
       textarea {
         width: 100%;
-        padding: 8px;
-        margin-top: 4px;
-        border-radius: 6px;
+        box-sizing: border-box;
+        padding: 10px;
+        margin-top: 6px;
         border: none;
+        border-radius: 8px;
         background: #111;
         color: #fff;
-        font-size: 0.9rem;
-        text-align: center; /* CENTER ALL TEXT IN FIELDS */
+        font-size: 0.95rem;
+        text-align: center;
+        outline: none;
       }
 
       textarea {
-        height: 80px;
+        min-height: 90px;
         resize: vertical;
       }
 
-      .button-row {
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 10px;
+      }
+
+      .note {
+        margin-top: 8px;
+        font-size: 0.8rem;
+        color: #bdbdbd;
+      }
+
+      .btnRow {
         margin-top: 16px;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
       }
 
       button {
-        padding: 10px 14px;
-        margin-top: 8px;
-        margin-right: 6px;
+        padding: 12px 16px;
         border: none;
         border-radius: 999px;
         cursor: pointer;
         background: #ff4d88;
         color: #fff;
-        font-weight: bold;
-        font-size: 0.9rem;
+        font-weight: 800;
+        font-size: 0.95rem;
       }
 
       button.secondary {
         background: #333;
-        color: #ddd;
+        color: #e9e9e9;
+        font-weight: 700;
       }
 
-      button.small {
-        padding: 6px 10px;
-        font-size: 0.75rem;
+      .pricing {
+        margin-top: 18px;
+        background: #181818;
+        border-radius: 12px;
+        padding: 12px;
+        text-align: center;
+      }
+
+      .pricing h3 {
+        margin: 0 0 10px;
+        color: #ffbdd6;
+        font-size: 1rem;
+      }
+
+      .pRow {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 0.9rem;
         margin-top: 6px;
-        margin-right: 0;
+      }
+      .pRow span {
+        width: 50%;
+      }
+      .pRow span:last-child {
+        text-align: right;
       }
 
       pre {
+        margin-top: 14px;
         background: #000;
-        padding: 15px;
-        border-radius: 8px;
-        margin-top: 12px;
-        max-height: 300px;
+        padding: 14px;
+        border-radius: 12px;
+        max-height: 320px;
         overflow: auto;
         font-size: 0.8rem;
-        text-align: center; /* CENTER ALL TEXT */
+        text-align: left; /* JSON is easier to read left-aligned */
         white-space: pre-wrap;
         word-break: break-word;
       }
 
-      .pricing-box {
-        margin-top: 18px;
+      .uploads {
+        margin-top: 16px;
+        background: #1a1a1a;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
         padding: 12px;
-        background: #181818;
-        border-radius: 10px;
       }
 
-      .pricing-box h3 {
-        margin: 0 0 8px 0;
-        font-size: 0.95rem;
-        color: #ffbdd6;
-        text-align: center;
-      }
-
-      .pricing-row {
-        display: flex;
-        justify-content: space-between; /* keeps layout clean */
+      .previewRow {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
         gap: 10px;
-        font-size: 0.85rem;
-        margin-top: 4px;
-        text-align: center;
       }
 
-      .pricing-row span {
-        width: 50%;
-      }
-
-      .pricing-row span:last-child {
-        text-align: right; /* number aligns nicely */
-      }
-
-      .pricing-summary {
-        margin-top: 8px;
-        font-size: 0.8rem;
-        color: #ccc;
-        text-align: center;
-      }
-
-      .note {
-        font-size: 0.75rem;
-        color: #aaa;
-        margin-top: 6px;
-        text-align: center;
-      }
-
-      /* Hide honeypot from humans */
-      .hp-wrap {
-        position: absolute;
-        left: -9999px;
-        top: -9999px;
-        height: 0;
-        width: 0;
+      .thumb {
+        border-radius: 10px;
         overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #000;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #aaa;
+        font-size: 0.85rem;
+        padding: 8px;
+        text-align: center;
+      }
+
+      .thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .thumb video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      @media (max-width: 720px) {
+        .row {
+          grid-template-columns: 1fr;
+        }
+        .previewRow {
+          grid-template-columns: 1fr 1fr;
+        }
       }
     </style>
   </head>
 
   <body>
-    <h1>Valentine's Day Engine</h1>
-    <h2 class="subtitle">
-      Tier 1 &amp; Tier 2 • pricing • logo • Google Sheets submit • v7.1
-    </h2>
+    <h1>Enduring Card Engine</h1>
+    <p class="subtitle">
+      Any occasion • customer inputs • uploads + pricing • v8
+    </p>
 
     <div class="engine">
-      <!-- LOGO IMAGE -->
-      <img class="logo" src="YOUR_LOGO_URL_HERE" alt="Enduring Love LLC Logo" />
+      <img class="logo" src="enduringholdings.png" alt="Logo" />
 
-      <!-- SPAM HONEYPOT (humans won't see this) -->
-      <div class="hp-wrap" aria-hidden="true">
-        <label for="company">Company</label>
-        <input id="company" name="company" autocomplete="off" tabindex="-1" />
+      <!-- BASIC ORDER -->
+      <label>Order ID</label>
+      <input
+        id="orderId"
+        placeholder="ex: CARD-0001 (leave blank to auto-generate)"
+      />
+      <div class="btnRow" style="margin-top: 10px">
+        <button class="secondary" type="button" onclick="autoOrderId()">
+          Generate Order ID
+        </button>
       </div>
 
-      <!-- BASIC ORDER INFO -->
-      <label>Order ID</label>
-      <input id="orderId" placeholder="ex: VDAY-0001" />
-      <button type="button" class="secondary small" onclick="autoOrderId()">
-        Generate Order ID
-      </button>
-
-      <label>Customer Name</label>
-      <input id="customerName" />
-
-      <label>Customer Email</label>
-      <input id="customerEmail" />
+      <div class="row">
+        <div>
+          <label>Customer Name</label>
+          <input id="customerName" placeholder="Your name" />
+        </div>
+        <div>
+          <label>Customer Email</label>
+          <input id="customerEmail" placeholder="you@email.com" />
+        </div>
+      </div>
 
       <label>Recipient Name</label>
-      <input id="recipientName" />
+      <input id="recipientName" placeholder="Who is this for?" />
 
-      <!-- TIER + THEME -->
-      <label>Service Tier</label>
-      <select id="tier">
-        <option value="">Select tier</option>
-        <option value="1">Tier 1</option>
-        <option value="2">Tier 2</option>
-        <option value="custom">Custom</option>
-      </select>
+      <!-- ANY CARD -->
+      <div class="row">
+        <div>
+          <label>Card Type</label>
+          <select id="cardType">
+            <option value="">Select</option>
+            <option value="valentines">Valentine’s</option>
+            <option value="anniversary">Anniversary</option>
+            <option value="birthday">Birthday</option>
+            <option value="wedding">Wedding</option>
+            <option value="apology">Apology</option>
+            <option value="congrats">Congrats</option>
+            <option value="thank_you">Thank You</option>
+            <option value="encouragement">Encouragement</option>
+            <option value="memorial">Memorial</option>
+            <option value="just_because">Just Because</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
 
-      <label>Color Theme</label>
-      <select id="theme">
-        <option value="">Select theme</option>
-        <option value="pink_white">Pink &amp; White</option>
-        <option value="black_pink">Black &amp; Pink</option>
-        <option value="red_white">Red &amp; White</option>
-        <option value="custom">Custom</option>
-      </select>
+        <div>
+          <label>Color Theme</label>
+          <select id="theme">
+            <option value="">Select</option>
+            <option value="pink_white">Pink &amp; White</option>
+            <option value="black_pink">Black &amp; Pink</option>
+            <option value="red_white">Red &amp; White</option>
+            <option value="blue_red">Blue &amp; Red</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+      </div>
 
-      <!-- COUNTS -->
-      <label>Number of Photos</label>
-      <input type="number" id="photos" min="0" />
+      <label>Occasion / Vibe (optional)</label>
+      <input
+        id="occasion"
+        placeholder="ex: 5-year anniversary, long-distance, funny + romantic, etc."
+      />
 
-      <label>Number of Songs</label>
-      <input type="number" id="songs" min="0" />
+      <!-- TIER + COUNTS -->
+      <div class="row">
+        <div>
+          <label>Service Tier</label>
+          <select id="tier">
+            <option value="">Select tier</option>
+            <option value="1">Tier 1</option>
+            <option value="2">Tier 2</option>
+            <option value="custom">Custom</option>
+          </select>
+          <div class="note">Pricing auto-calculates below.</div>
+        </div>
+        <div>
+          <label>Target Delivery Date</label>
+          <input
+            id="deliveryDate"
+            type="text"
+            placeholder="MM/DD/YYYY (ex: 02/14/2026)"
+            inputmode="numeric"
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Number of Photos</label>
+          <input type="number" id="photos" min="0" />
+        </div>
+        <div>
+          <label>Number of Songs</label>
+          <input type="number" id="songs" min="0" />
+        </div>
+      </div>
 
       <label>Number of Videos</label>
       <input type="number" id="videos" min="0" />
 
+      <!-- UPLOADS -->
+      <div class="uploads">
+        <h3 style="margin: 0 0 10px; color: #ffbdd6">
+          Uploads (customer selects files)
+        </h3>
+
+        <label>Upload Photos (multiple)</label>
+        <input id="photoFiles" type="file" accept="image/*" multiple />
+
+        <label>Upload Videos (multiple)</label>
+        <input id="videoFiles" type="file" accept="video/*" multiple />
+
+        <div class="note">
+          These uploads preview on this device. To actually RECEIVE the files
+          automatically, you’ll connect a receiver backend (Jotform File Upload
+          / Firebase Storage / etc.).
+        </div>
+
+        <div class="previewRow" id="previewRow"></div>
+      </div>
+
+      <!-- LINKS -->
+      <div class="row">
+        <div>
+          <label>Spotify Playlist Link (optional)</label>
+          <input
+            id="playlistUrl"
+            placeholder="https://open.spotify.com/playlist/..."
+          />
+        </div>
+        <div>
+          <label>YouTube Video Link (optional)</label>
+          <input
+            id="videoUrl"
+            placeholder="https://www.youtube.com/watch?v=..."
+          />
+        </div>
+      </div>
+
       <!-- MESSAGE -->
       <label>Headline / Title</label>
-      <input id="headline" placeholder="ex: Happy Valentine's Day, Babe" />
+      <input id="headline" placeholder="ex: I Love You More Than Yesterday" />
 
-      <label>Main Message</label>
-      <textarea id="message" placeholder="What goes on the card..."></textarea>
+      <label>Main Message (3 paragraphs recommended)</label>
+      <textarea
+        id="message"
+        placeholder="Paragraph 1...
+
+Paragraph 2...
+
+Paragraph 3..."
+      ></textarea>
+
+      <label>Special Instructions</label>
+      <textarea
+        id="specialNotes"
+        placeholder="ex: R&amp;B vibes, no cursing, mention year 1 memories, etc."
+      ></textarea>
 
       <!-- DELIVERY -->
       <label>Delivery Method</label>
       <select id="deliveryMethod">
-        <option value="">Select method</option>
+        <option value="">Select</option>
         <option value="email">Email</option>
         <option value="download_link">Download Link</option>
         <option value="both">Email + Download Link</option>
       </select>
 
-      <label>Target Delivery Date</label>
+      <!-- NOTIFICATIONS -->
+      <label>Notification Emails (leave blank to use defaults)</label>
       <input
-        type="text"
-        id="deliveryDate"
-        placeholder="MM/DD/YYYY (ex: 02/14/2026)"
-        inputmode="numeric"
+        id="notifyEmails"
+        placeholder="ex: email1@gmail.com, email2@gmail.com"
       />
-
-      <label>Special Instructions / Vibes</label>
-      <textarea
-        id="specialNotes"
-        placeholder="ex: R&B vibes, focus on year 1 memories, no cursing, etc."
-      ></textarea>
-
-      <!-- NOTIFICATION EMAILS -->
-      <label>Notification Emails (optional)</label>
-      <input id="notifyEmails" placeholder="leave blank to use defaults" />
       <div class="note">
-        Leave blank to auto-send to your stored emails &amp; phones.
+        Default notifications go to: aarondamar@gmail.com, maaron179@aol.com,
+        theenduringinvestor@gmail.com, and your Boost SMS gateways. (Phone
+        numbers alone cannot receive email unless converted to carrier SMS email
+        format.)
       </div>
 
       <!-- PRICING DISPLAY -->
-      <div class="pricing-box">
+      <div class="pricing">
         <h3>Pricing (auto-calculated)</h3>
-        <div class="pricing-row">
-          <span>Base (by tier):</span>
-          <span id="basePriceDisplay">$0</span>
+        <div class="pRow">
+          <span>Base (by tier):</span><span id="basePriceDisplay">$0</span>
         </div>
-        <div class="pricing-row">
-          <span>Extra Photos (beyond 4):</span>
-          <span id="photosPriceDisplay">$0</span>
+        <div class="pRow">
+          <span>Extra Photos (beyond 4):</span
+          ><span id="photosPriceDisplay">$0</span>
         </div>
-        <div class="pricing-row">
-          <span>Extra Songs (beyond 4):</span>
-          <span id="songsPriceDisplay">$0</span>
+        <div class="pRow">
+          <span>Extra Songs (beyond 4):</span
+          ><span id="songsPriceDisplay">$0</span>
         </div>
-        <div class="pricing-row">
-          <span>Videos:</span>
-          <span id="videosPriceDisplay">$0</span>
+        <div class="pRow">
+          <span>Videos:</span><span id="videosPriceDisplay">$0</span>
         </div>
-        <div class="pricing-row" style="font-weight: bold; margin-top: 8px">
-          <span>Estimated Total:</span>
-          <span id="totalPriceDisplay">$0</span>
+        <div class="pRow" style="font-weight: 900; margin-top: 8px">
+          <span>Estimated Total:</span><span id="totalPriceDisplay">$0</span>
         </div>
-        <div class="pricing-summary" id="pricingSummary">
+        <div class="note" id="pricingSummary">
           Tier: – • Photos: 0 • Songs: 0 • Videos: 0
         </div>
       </div>
 
-      <!-- BUTTONS (ONE-TAP SUBMIT) -->
-      <div class="button-row">
+      <!-- BUTTONS -->
+      <div class="btnRow">
         <button type="button" onclick="submitOrder()">Submit Order</button>
+        <button type="button" class="secondary" onclick="copyJSON()">
+          Copy JSON
+        </button>
         <button type="button" class="secondary" onclick="clearFields()">
           Clear All
         </button>
+        <button type="button" class="secondary" onclick="emailOrder()">
+          Email Order
+        </button>
       </div>
 
-      <!-- OUTPUT -->
       <pre id="output">{ }</pre>
     </div>
 
     <script>
-      // ====== GOOGLE SHEETS (APPS SCRIPT WEB APP URL) ======
-      // Paste your deployed Apps Script Web App URL here:
-      const SHEETS_WEB_APP_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
-
-      // ===== PRICING SETTINGS =====
+      // ---------------- PRICING ----------------
       const BASE_PRICES = { 1: 120, 2: 150, custom: 0 };
-
       const INCLUDED_PHOTOS = 4;
       const INCLUDED_SONGS = 4;
-
       const PHOTO_EXTRA_PRICE = 10;
       const SONG_EXTRA_PRICE = 10;
       const VIDEO_PRICE = 15;
 
-      // Default email list — all your inboxes + BOTH Boost phone numbers
+      // Default inboxes + Boost SMS gateways (these work as email recipients)
       const DEFAULT_NOTIFICATION_EMAILS =
         "aarondamar@gmail.com, maaron179@aol.com, theenduringinvestor@gmail.com, 2156107641@sms.myboostmobile.com, 4453057249@sms.myboostmobile.com";
 
-      // ===== SPAM SETTINGS =====
-      const PAGE_LOADED_AT = Date.now();
-      const MIN_SECONDS_ON_PAGE = 4;
-
+      // ---------------- HELPERS ----------------
       function val(id) {
-        const v = document.getElementById(id)?.value ?? "";
+        const el = document.getElementById(id);
+        const v = el ? el.value : "";
         return v === "" ? null : v;
       }
-
       function num(id) {
-        const v = document.getElementById(id)?.value ?? "";
+        const el = document.getElementById(id);
+        const v = el ? el.value : "";
         if (v === "") return null;
         const n = Number(v);
         return isNaN(n) ? null : n;
@@ -372,11 +491,9 @@
         songsCount,
         videosCount
       ) {
-        const summaryEl = document.getElementById("pricingSummary");
-        const tierLabel = tier || "–";
-        summaryEl.textContent =
+        document.getElementById("pricingSummary").textContent =
           "Tier: " +
-          tierLabel +
+          (tier || "–") +
           " • Photos: " +
           (photosCount || 0) +
           " • Songs: " +
@@ -387,13 +504,11 @@
 
       function computePricing() {
         const tier = val("tier");
-
         const photosCount = num("photos") || 0;
         const songsCount = num("songs") || 0;
         const videosCount = num("videos") || 0;
 
         const basePrice = BASE_PRICES[tier] ?? 0;
-
         const extraPhotos = Math.max(photosCount - INCLUDED_PHOTOS, 0);
         const extraSongs = Math.max(songsCount - INCLUDED_SONGS, 0);
 
@@ -425,12 +540,101 @@
         };
       }
 
+      function autoOrderId() {
+        if (document.getElementById("orderId").value.trim()) return;
+        const now = new Date();
+        const y = String(now.getFullYear()).slice(-2);
+        const m = String(now.getMonth() + 1).padStart(2, "0");
+        const d = String(now.getDate()).padStart(2, "0");
+        const h = String(now.getHours()).padStart(2, "0");
+        const min = String(now.getMinutes()).padStart(2, "0");
+        document.getElementById(
+          "orderId"
+        ).value = `CARD-${y}${m}${d}-${h}${min}`;
+      }
+
+      // ---------------- UPLOAD PREVIEWS ----------------
+      const previewRow = document.getElementById("previewRow");
+
+      function clearPreviews() {
+        previewRow.innerHTML = "";
+      }
+
+      function addThumb(node) {
+        const wrap = document.createElement("div");
+        wrap.className = "thumb";
+        wrap.appendChild(node);
+        previewRow.appendChild(wrap);
+      }
+
+      function previewFiles() {
+        clearPreviews();
+
+        const photoFiles = document.getElementById("photoFiles").files || [];
+        const videoFiles = document.getElementById("videoFiles").files || [];
+
+        // show up to 6 previews total
+        let shown = 0;
+
+        Array.from(photoFiles)
+          .slice(0, 6)
+          .forEach((f) => {
+            if (shown >= 6) return;
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(f);
+            img.onload = () => URL.revokeObjectURL(img.src);
+            addThumb(img);
+            shown++;
+          });
+
+        Array.from(videoFiles)
+          .slice(0, 6 - shown)
+          .forEach((f) => {
+            if (shown >= 6) return;
+            const vid = document.createElement("video");
+            vid.src = URL.createObjectURL(f);
+            vid.muted = true;
+            vid.playsInline = true;
+            vid.loop = true;
+            vid.autoplay = true;
+            vid.onloadeddata = () => {
+              try {
+                URL.revokeObjectURL(vid.src);
+              } catch (e) {}
+            };
+            addThumb(vid);
+            shown++;
+          });
+
+        if (shown === 0) {
+          const msg = document.createElement("div");
+          msg.textContent = "No previews yet.";
+          addThumb(msg);
+        }
+      }
+
+      document
+        .getElementById("photoFiles")
+        .addEventListener("change", previewFiles);
+      document
+        .getElementById("videoFiles")
+        .addEventListener("change", previewFiles);
+
+      // ---------------- JSON GENERATION ----------------
       function generateJSON() {
         const pricing = computePricing();
 
+        // Capture file names (actual file transfer requires backend)
+        const photoFiles = Array.from(
+          document.getElementById("photoFiles").files || []
+        );
+        const videoFiles = Array.from(
+          document.getElementById("videoFiles").files || []
+        );
+
         const data = {
-          engine: "Enduring Valentine's Engine",
-          version: "7.1",
+          engine: "Enduring Card Engine",
+          version: "8.0",
           created_at: new Date().toISOString(),
           order: {
             id: val("orderId"),
@@ -440,6 +644,8 @@
               val("notifyEmails") || DEFAULT_NOTIFICATION_EMAILS,
           },
           card: {
+            card_type: val("cardType"),
+            occasion: val("occasion"),
             tier: pricing.tier,
             color_theme: val("theme"),
             recipient_name: val("recipientName"),
@@ -451,6 +657,22 @@
               videos_count: pricing.videosCount,
               included_photos: INCLUDED_PHOTOS,
               included_songs: INCLUDED_SONGS,
+
+              // uploads (filenames only in static mode)
+              uploaded_photos: photoFiles.map((f) => ({
+                name: f.name,
+                type: f.type,
+                size: f.size,
+              })),
+              uploaded_videos: videoFiles.map((f) => ({
+                name: f.name,
+                type: f.type,
+                size: f.size,
+              })),
+
+              // optional links
+              playlist_url: val("playlistUrl"),
+              video_url: val("videoUrl"),
             },
           },
           delivery: {
@@ -474,138 +696,100 @@
           null,
           2
         );
+        return data;
+      }
+
+      function copyJSON() {
+        const text = document.getElementById("output").textContent;
+        if (!text || text.trim() === "{ }") {
+          alert("Generate/Submit first.");
+          return;
+        }
+        navigator.clipboard
+          .writeText(text)
+          .then(() => alert("JSON copied ✅"))
+          .catch(() => alert("Copy failed — copy manually."));
+      }
+
+      function emailOrder() {
+        const dataText = document.getElementById("output").textContent;
+        if (!dataText || dataText.trim() === "{ }") {
+          alert("Submit first.");
+          return;
+        }
+
+        const emails = val("notifyEmails") || DEFAULT_NOTIFICATION_EMAILS;
+        const subject = encodeURIComponent(
+          "New Card Order " + (val("orderId") || "")
+        );
+        const body = encodeURIComponent(dataText);
+
+        window.location.href = `mailto:${emails}?subject=${subject}&body=${body}`;
+      }
+
+      // ONE-TAP submit (generates JSON, saves locally for card.html if you use it)
+      function submitOrder() {
+        if (!document.getElementById("orderId").value.trim()) autoOrderId();
+        generateJSON();
+
+        // If you're using the auto-generated card page approach:
+        localStorage.setItem(
+          "ENDURING_LAST_ORDER_JSON",
+          document.getElementById("output").textContent
+        );
+
+        alert(
+          "Order created ✅ (JSON generated). If you want file uploads to reach you automatically, connect a receiver backend like Jotform File Upload."
+        );
       }
 
       function clearFields() {
-        const ids = [
+        [
           "orderId",
           "customerName",
           "customerEmail",
           "recipientName",
-          "tier",
+          "cardType",
           "theme",
+          "occasion",
+          "tier",
           "photos",
           "songs",
           "videos",
+          "playlistUrl",
+          "videoUrl",
           "headline",
           "message",
+          "specialNotes",
           "deliveryMethod",
           "deliveryDate",
-          "specialNotes",
           "notifyEmails",
-          "company",
-        ];
-        ids.forEach((id) => {
+        ].forEach((id) => {
           const el = document.getElementById(id);
           if (el) el.value = "";
         });
+
+        // Clear file inputs
+        document.getElementById("photoFiles").value = "";
+        document.getElementById("videoFiles").value = "";
+        clearPreviews();
+
         document.getElementById("output").textContent = "{ }";
         updatePricingDisplay(0, 0, 0, 0, 0);
         updatePricingSummary(null, 0, 0, 0);
-        computePricing();
       }
 
-      function autoOrderId() {
-        if (val("orderId")) return;
+      // live pricing updates
+      ["tier", "photos", "songs", "videos"].forEach((id) => {
+        const el = document.getElementById(id);
+        el.addEventListener("input", computePricing);
+        el.addEventListener("change", computePricing);
+      });
 
-        const now = new Date();
-        const y = String(now.getFullYear()).slice(-2);
-        const m = String(now.getMonth() + 1).padStart(2, "0");
-        const d = String(now.getDate()).padStart(2, "0");
-        const h = String(now.getHours()).padStart(2, "0");
-        const min = String(now.getMinutes()).padStart(2, "0");
-
-        const generated = `VDAY-${y}${m}${d}-${h}${min}`;
-        document.getElementById("orderId").value = generated;
-      }
-
-      async function submitOrder() {
-        // If no URL pasted yet, fail loud
-        if (
-          !SHEETS_WEB_APP_URL ||
-          SHEETS_WEB_APP_URL.includes("PASTE_YOUR_WEB_APP_URL_HERE")
-        ) {
-          alert(
-            "Paste your Google Sheets Web App URL into SHEETS_WEB_APP_URL first."
-          );
-          return;
-        }
-
-        // Build JSON + pricing
-        generateJSON();
-
-        const payloadText = document.getElementById("output").textContent;
-        if (!payloadText || payloadText.trim() === "{ }") {
-          alert("Please fill the form and try again.");
-          return;
-        }
-
-        const payload = JSON.parse(payloadText);
-
-        // ---- SPAM CHECKS (front-end) ----
-        const hp = (document.getElementById("company")?.value || "").trim();
-        const secondsOnPage = Math.round((Date.now() - PAGE_LOADED_AT) / 1000);
-
-        if (hp.length > 0) {
-          alert("Submission blocked.");
-          return;
-        }
-
-        if (secondsOnPage < MIN_SECONDS_ON_PAGE) {
-          alert("Please take a moment and try again.");
-          return;
-        }
-
-        // Attach meta for server-side validation too
-        payload.meta = {
-          honeypot: hp,
-          seconds_on_page: secondsOnPage,
-        };
-
-        // Submit
-        const btn = event?.target;
-        const oldText = btn?.textContent;
-        if (btn) {
-          btn.textContent = "Submitting...";
-          btn.disabled = true;
-        }
-
-        try {
-          const res = await fetch(SHEETS_WEB_APP_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
-
-          const out = await res.json();
-          if (out.ok) {
-            alert("Order submitted ✅");
-            // Optional: clearFields();
-          } else {
-            alert("Submit failed: " + (out.error || "Unknown error"));
-          }
-        } catch (err) {
-          alert("Submit failed: " + err.message);
-        } finally {
-          if (btn) {
-            btn.textContent = oldText || "Submit Order";
-            btn.disabled = false;
-          }
-        }
-      }
-
-      function initLivePricing() {
-        const ids = ["tier", "photos", "songs", "videos"];
-        ids.forEach((id) => {
-          const el = document.getElementById(id);
-          if (!el) return;
-          el.addEventListener("input", computePricing);
-          el.addEventListener("change", computePricing);
-        });
-        computePricing();
-      }
-
-      document.addEventListener("DOMContentLoaded", initLivePricing);
+      // init
+      computePricing();
+      previewFiles();
     </script>
   </body>
 </html>
+
