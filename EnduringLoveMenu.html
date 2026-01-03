@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Valentine's Day Engine - JSON Generator (v7.1)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        background: #111;
+        color: #fff;
+        text-align: center; /* CENTER ALL TEXT */
+      }
+
+      h1 {
+        text-align: center;
+        color: #ff4d88;
+        margin-bottom: 4px;
+      }
+
+      h2.subtitle {
+        text-align: center;
+        font-size: 0.9rem;
+        color: #ffbdd6;
+        margin-top: 0;
+        margin-bottom: 16px;
+      }
+
+      .engine {
+        max-width: 850px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #222;
+        border-radius: 12px;
+        position: relative;
+        text-align: center; /* CENTER ALL TEXT */
+      }
+
+      /* LOGO */
+      .logo {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 130px;
+        height: auto;
+        border-radius: 6px;
+      }
+
+      label {
+        display: block;
+        margin-top: 10px;
+        font-size: 0.9rem;
+        color: #ffbdd6;
+        text-align: center;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 8px;
+        margin-top: 4px;
+        border-radius: 6px;
+        border: none;
+        background: #111;
+        color: #fff;
+        font-size: 0.9rem;
+        text-align: center; /* CENTER ALL TEXT IN FIELDS */
+      }
+
+      textarea {
+        height: 80px;
+        resize: vertical;
+      }
+
+      .button-row {
+        margin-top: 16px;
+      }
+
+      button {
+        padding: 10px 14px;
+        margin-top: 8px;
+        margin-right: 6px;
+        border: none;
+        border-radius: 999px;
+        cursor: pointer;
+        background: #ff4d88;
+        color: #fff;
+        font-weight: bold;
+        font-size: 0.9rem;
+      }
+
+      button.secondary {
+        background: #333;
+        color: #ddd;
+      }
+
+      button.small {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+        margin-top: 6px;
+        margin-right: 0;
+      }
+
+      pre {
+        background: #000;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 12px;
+        max-height: 300px;
+        overflow: auto;
+        font-size: 0.8rem;
+        text-align: center; /* CENTER ALL TEXT */
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .pricing-box {
+        margin-top: 18px;
+        padding: 12px;
+        background: #181818;
+        border-radius: 10px;
+      }
+
+      .pricing-box h3 {
+        margin: 0 0 8px 0;
+        font-size: 0.95rem;
+        color: #ffbdd6;
+        text-align: center;
+      }
+
+      .pricing-row {
+        display: flex;
+        justify-content: space-between; /* keeps layout clean */
+        gap: 10px;
+        font-size: 0.85rem;
+        margin-top: 4px;
+        text-align: center;
+      }
+
+      .pricing-row span {
+        width: 50%;
+      }
+
+      .pricing-row span:last-child {
+        text-align: right; /* number aligns nicely */
+      }
+
+      .pricing-summary {
+        margin-top: 8px;
+        font-size: 0.8rem;
+        color: #ccc;
+        text-align: center;
+      }
+
+      .note {
+        font-size: 0.75rem;
+        color: #aaa;
+        margin-top: 6px;
+        text-align: center;
+      }
+
+      /* Hide honeypot from humans */
+      .hp-wrap {
+        position: absolute;
+        left: -9999px;
+        top: -9999px;
+        height: 0;
+        width: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Valentine's Day Engine</h1>
+    <h2 class="subtitle">
+      Tier 1 &amp; Tier 2 • pricing • logo • Google Sheets submit • v7.1
+    </h2>
+
+    <div class="engine">
+      <!-- LOGO IMAGE -->
+      <img class="logo" src="YOUR_LOGO_URL_HERE" alt="Enduring Love LLC Logo" />
+
+      <!-- SPAM HONEYPOT (humans won't see this) -->
+      <div class="hp-wrap" aria-hidden="true">
+        <label for="company">Company</label>
+        <input id="company" name="company" autocomplete="off" tabindex="-1" />
+      </div>
+
+      <!-- BASIC ORDER INFO -->
+      <label>Order ID</label>
+      <input id="orderId" placeholder="ex: VDAY-0001" />
+      <button type="button" class="secondary small" onclick="autoOrderId()">
+        Generate Order ID
+      </button>
+
+      <label>Customer Name</label>
+      <input id="customerName" />
+
+      <label>Customer Email</label>
+      <input id="customerEmail" />
+
+      <label>Recipient Name</label>
+      <input id="recipientName" />
+
+      <!-- TIER + THEME -->
+      <label>Service Tier</label>
+      <select id="tier">
+        <option value="">Select tier</option>
+        <option value="1">Tier 1</option>
+        <option value="2">Tier 2</option>
+        <option value="custom">Custom</option>
+      </select>
+
+      <label>Color Theme</label>
+      <select id="theme">
+        <option value="">Select theme</option>
+        <option value="pink_white">Pink &amp; White</option>
+        <option value="black_pink">Black &amp; Pink</option>
+        <option value="red_white">Red &amp; White</option>
+        <option value="custom">Custom</option>
+      </select>
+
+      <!-- COUNTS -->
+      <label>Number of Photos</label>
+      <input type="number" id="photos" min="0" />
+
+      <label>Number of Songs</label>
+      <input type="number" id="songs" min="0" />
+
+      <label>Number of Videos</label>
+      <input type="number" id="videos" min="0" />
+
+      <!-- MESSAGE -->
+      <label>Headline / Title</label>
+      <input id="headline" placeholder="ex: Happy Valentine's Day, Babe" />
+
+      <label>Main Message</label>
+      <textarea id="message" placeholder="What goes on the card..."></textarea>
+
+      <!-- DELIVERY -->
+      <label>Delivery Method</label>
+      <select id="deliveryMethod">
+        <option value="">Select method</option>
+        <option value="email">Email</option>
+        <option value="download_link">Download Link</option>
+        <option value="both">Email + Download Link</option>
+      </select>
+
+      <label>Target Delivery Date</label>
+      <input
+        type="text"
+        id="deliveryDate"
+        placeholder="MM/DD/YYYY (ex: 02/14/2026)"
+        inputmode="numeric"
+      />
+
+      <label>Special Instructions / Vibes</label>
+      <textarea
+        id="specialNotes"
+        placeholder="ex: R&B vibes, focus on year 1 memories, no cursing, etc."
+      ></textarea>
+
+      <!-- NOTIFICATION EMAILS -->
+      <label>Notification Emails (optional)</label>
+      <input id="notifyEmails" placeholder="leave blank to use defaults" />
+      <div class="note">
+        Leave blank to auto-send to your stored emails &amp; phones.
+      </div>
+
+      <!-- PRICING DISPLAY -->
+      <div class="pricing-box">
+        <h3>Pricing (auto-calculated)</h3>
+        <div class="pricing-row">
+          <span>Base (by tier):</span>
+          <span id="basePriceDisplay">$0</span>
+        </div>
+        <div class="pricing-row">
+          <span>Extra Photos (beyond 4):</span>
+          <span id="photosPriceDisplay">$0</span>
+        </div>
+        <div class="pricing-row">
+          <span>Extra Songs (beyond 4):</span>
+          <span id="songsPriceDisplay">$0</span>
+        </div>
+        <div class="pricing-row">
+          <span>Videos:</span>
+          <span id="videosPriceDisplay">$0</span>
+        </div>
+        <div class="pricing-row" style="font-weight: bold; margin-top: 8px">
+          <span>Estimated Total:</span>
+          <span id="totalPriceDisplay">$0</span>
+        </div>
+        <div class="pricing-summary" id="pricingSummary">
+          Tier: – • Photos: 0 • Songs: 0 • Videos: 0
+        </div>
+      </div>
+
+      <!-- BUTTONS (ONE-TAP SUBMIT) -->
+      <div class="button-row">
+        <button type="button" onclick="submitOrder()">Submit Order</button>
+        <button type="button" class="secondary" onclick="clearFields()">
+          Clear All
+        </button>
+      </div>
+
+      <!-- OUTPUT -->
+      <pre id="output">{ }</pre>
+    </div>
+
+    <script>
+      // ====== GOOGLE SHEETS (APPS SCRIPT WEB APP URL) ======
+      // Paste your deployed Apps Script Web App URL here:
+      const SHEETS_WEB_APP_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
+
+      // ===== PRICING SETTINGS =====
+      const BASE_PRICES = { 1: 120, 2: 150, custom: 0 };
+
+      const INCLUDED_PHOTOS = 4;
+      const INCLUDED_SONGS = 4;
+
+      const PHOTO_EXTRA_PRICE = 10;
+      const SONG_EXTRA_PRICE = 10;
+      const VIDEO_PRICE = 15;
+
+      // Default email list — all your inboxes + BOTH Boost phone numbers
+      const DEFAULT_NOTIFICATION_EMAILS =
+        "aarondamar@gmail.com, maaron179@aol.com, theenduringinvestor@gmail.com, 2156107641@sms.myboostmobile.com, 4453057249@sms.myboostmobile.com";
+
+      // ===== SPAM SETTINGS =====
+      const PAGE_LOADED_AT = Date.now();
+      const MIN_SECONDS_ON_PAGE = 4;
+
+      function val(id) {
+        const v = document.getElementById(id)?.value ?? "";
+        return v === "" ? null : v;
+      }
+
+      function num(id) {
+        const v = document.getElementById(id)?.value ?? "";
+        if (v === "") return null;
+        const n = Number(v);
+        return isNaN(n) ? null : n;
+      }
+
+      function updatePricingDisplay(
+        basePrice,
+        photosPrice,
+        songsPrice,
+        videosPrice,
+        totalPrice
+      ) {
+        document.getElementById("basePriceDisplay").textContent =
+          "$" + basePrice;
+        document.getElementById("photosPriceDisplay").textContent =
+          "$" + photosPrice;
+        document.getElementById("songsPriceDisplay").textContent =
+          "$" + songsPrice;
+        document.getElementById("videosPriceDisplay").textContent =
+          "$" + videosPrice;
+        document.getElementById("totalPriceDisplay").textContent =
+          "$" + totalPrice;
+      }
+
+      function updatePricingSummary(
+        tier,
+        photosCount,
+        songsCount,
+        videosCount
+      ) {
+        const summaryEl = document.getElementById("pricingSummary");
+        const tierLabel = tier || "–";
+        summaryEl.textContent =
+          "Tier: " +
+          tierLabel +
+          " • Photos: " +
+          (photosCount || 0) +
+          " • Songs: " +
+          (songsCount || 0) +
+          " • Videos: " +
+          (videosCount || 0);
+      }
+
+      function computePricing() {
+        const tier = val("tier");
+
+        const photosCount = num("photos") || 0;
+        const songsCount = num("songs") || 0;
+        const videosCount = num("videos") || 0;
+
+        const basePrice = BASE_PRICES[tier] ?? 0;
+
+        const extraPhotos = Math.max(photosCount - INCLUDED_PHOTOS, 0);
+        const extraSongs = Math.max(songsCount - INCLUDED_SONGS, 0);
+
+        const photosPrice = extraPhotos * PHOTO_EXTRA_PRICE;
+        const songsPrice = extraSongs * SONG_EXTRA_PRICE;
+        const videosPrice = videosCount * VIDEO_PRICE;
+
+        const totalPrice = basePrice + photosPrice + songsPrice + videosPrice;
+
+        updatePricingDisplay(
+          basePrice,
+          photosPrice,
+          songsPrice,
+          videosPrice,
+          totalPrice
+        );
+        updatePricingSummary(tier, photosCount, songsCount, videosCount);
+
+        return {
+          tier,
+          photosCount,
+          songsCount,
+          videosCount,
+          basePrice,
+          photosPrice,
+          songsPrice,
+          videosPrice,
+          totalPrice,
+        };
+      }
+
+      function generateJSON() {
+        const pricing = computePricing();
+
+        const data = {
+          engine: "Enduring Valentine's Engine",
+          version: "7.1",
+          created_at: new Date().toISOString(),
+          order: {
+            id: val("orderId"),
+            customer_name: val("customerName"),
+            customer_email: val("customerEmail"),
+            notification_emails:
+              val("notifyEmails") || DEFAULT_NOTIFICATION_EMAILS,
+          },
+          card: {
+            tier: pricing.tier,
+            color_theme: val("theme"),
+            recipient_name: val("recipientName"),
+            headline: val("headline"),
+            message: val("message"),
+            assets: {
+              photos_count: pricing.photosCount,
+              songs_count: pricing.songsCount,
+              videos_count: pricing.videosCount,
+              included_photos: INCLUDED_PHOTOS,
+              included_songs: INCLUDED_SONGS,
+            },
+          },
+          delivery: {
+            method: val("deliveryMethod"),
+            target_date: val("deliveryDate"),
+          },
+          pricing: {
+            base_price: pricing.basePrice,
+            photos_price: pricing.photosPrice,
+            songs_price: pricing.songsPrice,
+            videos_price: pricing.videosPrice,
+            total_price: pricing.totalPrice,
+          },
+          notes: {
+            special_instructions: val("specialNotes"),
+          },
+        };
+
+        document.getElementById("output").textContent = JSON.stringify(
+          data,
+          null,
+          2
+        );
+      }
+
+      function clearFields() {
+        const ids = [
+          "orderId",
+          "customerName",
+          "customerEmail",
+          "recipientName",
+          "tier",
+          "theme",
+          "photos",
+          "songs",
+          "videos",
+          "headline",
+          "message",
+          "deliveryMethod",
+          "deliveryDate",
+          "specialNotes",
+          "notifyEmails",
+          "company",
+        ];
+        ids.forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.value = "";
+        });
+        document.getElementById("output").textContent = "{ }";
+        updatePricingDisplay(0, 0, 0, 0, 0);
+        updatePricingSummary(null, 0, 0, 0);
+        computePricing();
+      }
+
+      function autoOrderId() {
+        if (val("orderId")) return;
+
+        const now = new Date();
+        const y = String(now.getFullYear()).slice(-2);
+        const m = String(now.getMonth() + 1).padStart(2, "0");
+        const d = String(now.getDate()).padStart(2, "0");
+        const h = String(now.getHours()).padStart(2, "0");
+        const min = String(now.getMinutes()).padStart(2, "0");
+
+        const generated = `VDAY-${y}${m}${d}-${h}${min}`;
+        document.getElementById("orderId").value = generated;
+      }
+
+      async function submitOrder() {
+        // If no URL pasted yet, fail loud
+        if (
+          !SHEETS_WEB_APP_URL ||
+          SHEETS_WEB_APP_URL.includes("PASTE_YOUR_WEB_APP_URL_HERE")
+        ) {
+          alert(
+            "Paste your Google Sheets Web App URL into SHEETS_WEB_APP_URL first."
+          );
+          return;
+        }
+
+        // Build JSON + pricing
+        generateJSON();
+
+        const payloadText = document.getElementById("output").textContent;
+        if (!payloadText || payloadText.trim() === "{ }") {
+          alert("Please fill the form and try again.");
+          return;
+        }
+
+        const payload = JSON.parse(payloadText);
+
+        // ---- SPAM CHECKS (front-end) ----
+        const hp = (document.getElementById("company")?.value || "").trim();
+        const secondsOnPage = Math.round((Date.now() - PAGE_LOADED_AT) / 1000);
+
+        if (hp.length > 0) {
+          alert("Submission blocked.");
+          return;
+        }
+
+        if (secondsOnPage < MIN_SECONDS_ON_PAGE) {
+          alert("Please take a moment and try again.");
+          return;
+        }
+
+        // Attach meta for server-side validation too
+        payload.meta = {
+          honeypot: hp,
+          seconds_on_page: secondsOnPage,
+        };
+
+        // Submit
+        const btn = event?.target;
+        const oldText = btn?.textContent;
+        if (btn) {
+          btn.textContent = "Submitting...";
+          btn.disabled = true;
+        }
+
+        try {
+          const res = await fetch(SHEETS_WEB_APP_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          const out = await res.json();
+          if (out.ok) {
+            alert("Order submitted ✅");
+            // Optional: clearFields();
+          } else {
+            alert("Submit failed: " + (out.error || "Unknown error"));
+          }
+        } catch (err) {
+          alert("Submit failed: " + err.message);
+        } finally {
+          if (btn) {
+            btn.textContent = oldText || "Submit Order";
+            btn.disabled = false;
+          }
+        }
+      }
+
+      function initLivePricing() {
+        const ids = ["tier", "photos", "songs", "videos"];
+        ids.forEach((id) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          el.addEventListener("input", computePricing);
+          el.addEventListener("change", computePricing);
+        });
+        computePricing();
+      }
+
+      document.addEventListener("DOMContentLoaded", initLivePricing);
+    </script>
+  </body>
+</html>
